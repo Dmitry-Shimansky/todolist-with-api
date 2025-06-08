@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "../../Downloads/todolist-11",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
