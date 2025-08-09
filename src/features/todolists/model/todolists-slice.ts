@@ -5,6 +5,9 @@ import { todolistApi } from "@/features/todolists/api/todolistApi.ts"
 export const todolistsSlice = createSlice({
   name: "todolists",
   initialState: [] as DomainTodolist[],
+  selectors: {
+    selectTodolists: (state) => state,
+  },
   reducers: (create) => {
     return {
       deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
@@ -95,6 +98,7 @@ export const deleteTodolistTC = createAsyncThunk(
   },
 )
 
+export const { selectTodolists } = todolistsSlice.selectors
 export const todolistsReducer = todolistsSlice.reducer
 export const { changeTodolistFilterAC } = todolistsSlice.actions
 
