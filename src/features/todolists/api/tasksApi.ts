@@ -9,13 +9,17 @@ export const tasksApi = {
   createTask({ todolistId, title }: { todolistId: string; title: string }) {
     return instance.post<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks`, { title })
   },
-  changeTaskStatus({ todolistId, taskId, model }: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
+  // changeTaskStatus({ todolistId, taskId, model }: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
+  //   return instance.put<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
+  // },
+  updateTask(payload: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
+    const { todolistId, taskId, model } = payload
     return instance.put<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
   },
   deleteTask({ todolistId, taskId }: { todolistId: string; taskId: string }) {
     return instance.delete<BaseResponse>(`/todo-lists/${todolistId}/tasks/${taskId}`)
   },
-  changeTaskTitle({ todolistId, taskId, model }: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
-    return instance.put<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
-  },
+  // changeTaskTitle({ todolistId, taskId, model }: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
+  //   return instance.put<BaseResponse<{ item: DomainTask }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
+  // },
 }
