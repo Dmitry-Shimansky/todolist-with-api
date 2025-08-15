@@ -1,23 +1,24 @@
-import {type ChangeEvent, type KeyboardEvent, useState} from 'react'
-import TextField from '@mui/material/TextField'
-import AddBoxIcon from '@mui/icons-material/AddBox'
-import IconButton from '@mui/material/IconButton'
+import { type ChangeEvent, type KeyboardEvent, useState } from "react"
+import TextField from "@mui/material/TextField"
+import AddBoxIcon from "@mui/icons-material/AddBox"
+import IconButton from "@mui/material/IconButton"
 
 type Props = {
   onCreateItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const CreateItemForm = ({ onCreateItem }: Props) => {
-  const [title, setTitle] = useState('')
+export const CreateItemForm = ({ onCreateItem, disabled }: Props) => {
+  const [title, setTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
 
   const createItemHandler = () => {
     const trimmedTitle = title.trim()
-    if (trimmedTitle !== '') {
+    if (trimmedTitle !== "") {
       onCreateItem(trimmedTitle)
-      setTitle('')
+      setTitle("")
     } else {
-      setError('Title is required')
+      setError("Title is required")
     }
   }
 
@@ -27,24 +28,27 @@ export const CreateItemForm = ({ onCreateItem }: Props) => {
   }
 
   const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       createItemHandler()
     }
   }
 
   return (
-      <div>
-        <TextField label={'Enter a title'}
-                   variant={'outlined'}
-                   value={title}
-                   size={'small'}
-                   error={!!error}
-                   helperText={error}
-                   onChange={changeTitleHandler}
-                   onKeyDown={createItemOnEnterHandler}/>
-        <IconButton onClick={createItemHandler} color={'primary'}>
-          <AddBoxIcon />
-        </IconButton>
-      </div>
+    <div>
+      <TextField
+        label={"Enter a title"}
+        variant={"outlined"}
+        value={title}
+        size={"small"}
+        error={!!error}
+        helperText={error}
+        onChange={changeTitleHandler}
+        onKeyDown={createItemOnEnterHandler}
+        inert={disabled}
+      />
+      <IconButton onClick={createItemHandler} color={"primary"} disabled={disabled}>
+        <AddBoxIcon />
+      </IconButton>
+    </div>
   )
 }
