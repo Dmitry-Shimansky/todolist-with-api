@@ -7,7 +7,8 @@ import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import type { ChangeEvent } from "react"
 import { getListItemSx } from "./TaskItem.styles.ts"
-import { DomainTask, TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
 
 type Props = {
   task: DomainTask

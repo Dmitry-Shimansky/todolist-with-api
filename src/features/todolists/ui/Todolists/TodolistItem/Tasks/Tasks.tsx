@@ -5,7 +5,7 @@ import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 import { fetchTasks, selectTasks } from "@/features/todolists/model/tasks-slice.ts"
 import { useEffect } from "react"
 import { useAppDispatch } from "@/common/hooks"
-import { TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
 
 type Props = {
   todolist: DomainTodolist
