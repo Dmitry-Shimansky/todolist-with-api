@@ -41,6 +41,7 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(changeStatusAC({ status: "loading" }))
           const res = await tasksApi.createTask(args)
+          domainTaskSchema.parse(res.data.data.item) // zod validation
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))
             return { task: res.data.data.item }
@@ -112,6 +113,7 @@ export const tasksSlice = createAppSlice({
         try {
           dispatch(changeStatusAC({ status: "loading" }))
           const res = await tasksApi.updateTask({ todolistId, taskId, model })
+          domainTaskSchema.parse(res.data.data.item) // zod validation
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))
             return { task: res.data.data.item }

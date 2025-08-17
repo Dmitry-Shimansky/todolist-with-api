@@ -1,4 +1,4 @@
-import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
+import { Todolist, todolistSchema } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistApi } from "@/features/todolists/api/todolistApi.ts"
 import { createAppSlice } from "@/common/utils"
 import { changeStatusAC } from "@/app/app-slice.ts"
@@ -34,12 +34,12 @@ export const todolistsSlice = createAppSlice({
           const { dispatch, rejectWithValue } = thunkAPI
           try {
             dispatch(changeStatusAC({ status: "loading" }))
-            await new Promise((resolve) => setTimeout(resolve, 2000))
             const res = await todolistApi.getTodolist()
+            todolistSchema.array().parse(res.data) // zod validation
             dispatch(changeStatusAC({ status: "succeeded" }))
             return { todolists: res.data }
           } catch (err) {
-            dispatch(changeStatusAC({ status: "failed" }))
+            handleServerError(err, dispatch)
             return rejectWithValue(err)
           }
         },
@@ -57,6 +57,7 @@ export const todolistsSlice = createAppSlice({
           try {
             dispatch(changeStatusAC({ status: "loading" }))
             const res = await todolistApi.createTodolist(title)
+            todolistSchema.parse(res.data.data.item) // zod validation
             if (res.data.resultCode === ResultCode.Success) {
               dispatch(changeStatusAC({ status: "succeeded" }))
               return { todolist: res.data.data.item }
