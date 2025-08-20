@@ -2,6 +2,9 @@ import { Route, Routes } from "react-router"
 import { Main } from "@/app/Main.tsx"
 import { Login } from "@/features/auth/ui/Login/Login.tsx"
 import { PageNotFound } from "@/common/components"
+import { PrivateRoutes } from "@/common/components/PrivateRoutes/PrivateRoutes.tsx"
+import { useAppSelector } from "@/common/hooks"
+import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
 
 export const Path = {
   Main: "/",
@@ -10,10 +13,25 @@ export const Path = {
 } as const
 
 export const Routing = () => {
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
   return (
     <Routes>
-      <Route path={Path.Main} element={<Main />} />
-      <Route path={Path.Login} element={<Login />} />
+      <Route element={<PrivateRoutes isAllowed={isLoggedIn} />}>
+        <Route path={Path.Main} element={<Main />} />
+      </Route>
+      <Route element={<PrivateRoutes isAllowed={!isLoggedIn} redirectPath={Path.Main} />}>
+        <Route path={Path.Login} element={<Login />} />
+      </Route>
+      // Для children
+      {/*<Route*/}
+      {/*  path={Path.Login}*/}
+      {/*  element={*/}
+      {/*    <PrivateRoutes isAllowed={!isLoggedIn} redirectPath={Path.Main}>*/}
+      {/*      <Login />*/}
+      {/*    </PrivateRoutes>*/}
+      {/*  }*/}
+      {/*/>*/}
       <Route path={Path.NotFound} element={<PageNotFound />} />
     </Routes>
   )

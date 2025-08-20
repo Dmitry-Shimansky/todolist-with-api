@@ -7,6 +7,7 @@ import { RootState } from "@/app/store.ts"
 import { ResultCode } from "@/common/enums"
 import { handleServerError } from "@/common/utils/handleServerError.ts"
 import { handleAppError } from "@/common/utils/handleAppError.ts"
+import { clearDataAC } from "@/common/actions"
 
 export const tasksSlice = createAppSlice({
   name: "tasks",
@@ -144,6 +145,9 @@ export const tasksSlice = createAppSlice({
       })
       .addCase(deleteTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id]
+      })
+      .addCase(clearDataAC, () => {
+        return {}
       })
   },
 })
