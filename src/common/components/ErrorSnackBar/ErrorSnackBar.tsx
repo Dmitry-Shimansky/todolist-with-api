@@ -2,7 +2,7 @@ import { type SyntheticEvent } from "react"
 import Alert from "@mui/material/Alert"
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
-import { selectError, setAppErrorAC } from "@/app/app-slice.ts"
+import { selectError, setAppErrorAC } from "@/app/model/app-slice.ts"
 
 export const ErrorSnackBar = () => {
   const error = useAppSelector(selectError)

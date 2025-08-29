@@ -1,4 +1,4 @@
-import { changeStatusAC, setAppErrorAC } from "@/app/app-slice.ts"
+import { changeStatusAC, setAppErrorAC } from "@/app/model/app-slice.ts"
 import { Dispatch } from "@reduxjs/toolkit"
 import axios from "axios"
 import z from "zod"

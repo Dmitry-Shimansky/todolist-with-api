@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit"
 import { appReducer, appSlice } from "./app-slice.ts"
 import { tasksReducer, tasksSlice } from "@/features/todolists/model/tasks-slice.ts"
 import { todolistsReducer, todolistsSlice } from "@/features/todolists/model/todolists-slice.ts"
-import { authReducer, authSlice } from "@/features/auth/model/auth-slice.ts"
+import { setupListeners } from "@reduxjs/toolkit/query"
+import { baseApi } from "@/app/api/baseApi.ts"
 
 // создание store
 export const store = configureStore({
@@ -10,14 +11,17 @@ export const store = configureStore({
     [tasksSlice.name]: tasksReducer,
     [todolistsSlice.name]: todolistsReducer,
     [appSlice.name]: appReducer,
-    [authSlice.name]: authReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
+  middleware: (gDM) => gDM().concat(baseApi.middleware),
 })
 
 // автоматическое определение типа всего объекта состояния
 export type RootState = ReturnType<typeof store.getState>
 // автоматическое определение типа метода dispatch
 export type AppDispatch = typeof store.dispatch
+
+setupListeners(store.dispatch)
 
 // для возможности обращения к store в консоли браузера
 // @ts-ignore

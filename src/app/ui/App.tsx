@@ -1,29 +1,35 @@
-import { Header } from "@/common/components/Header/Header"
-import { useAppSelector } from "@/common/hooks/useAppSelector"
-import { getTheme } from "@/common/theme/theme"
+import { Header } from "@/common/components/Header/Header.tsx"
+import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
+import { getTheme } from "@/common/theme/theme.ts"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
-import { selectThemeMode } from "./app-slice.ts"
+import { selectThemeMode, setIsLoggedIn } from "../model/app-slice.ts"
 import { ErrorSnackBar } from "@/common/components"
 import { Routing } from "@/common/routing/Routing.tsx"
 import { useAppDispatch } from "@/common/hooks"
 import { useEffect, useState } from "react"
-import { meTC } from "@/features/auth/model/auth-slice.ts"
 import { CircularProgress } from "@mui/material"
 import styles from "./App.module.css"
+import { useMeQuery } from "@/features/auth/api/authApi.ts"
+import { ResultCode } from "@/common/enums"
 
 export const App = () => {
   const [init, setInit] = useState(false)
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
 
+  const { data, isLoading } = useMeQuery()
+
   const theme = getTheme(themeMode)
 
   useEffect(() => {
-    dispatch(meTC())
-      .unwrap()
-      .finally(() => setInit(true))
-  }, [])
+    if (!isLoading) {
+      if (data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
+      }
+      setInit(true)
+    }
+  }, [isLoading])
 
   if (!init) {
     return (

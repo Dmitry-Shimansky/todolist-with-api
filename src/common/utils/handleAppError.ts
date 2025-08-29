@@ -1,5 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { changeStatusAC, setAppErrorAC } from "@/app/app-slice.ts"
+import { changeStatusAC, setAppErrorAC } from "@/app/model/app-slice.ts"
 import { BaseResponse } from "@/common/types"
 
 export const handleAppError = <T>(data: BaseResponse<T>, dispatch: Dispatch) => {

@@ -1,9 +1,9 @@
 import { createTodolist, deleteTodolist } from "./todolists-slice.ts"
 import { createAppSlice } from "@/common/utils"
-import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
+import { _tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, domainTaskSchema, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
-import { changeStatusAC } from "@/app/app-slice.ts"
-import { RootState } from "@/app/store.ts"
+import { changeStatusAC } from "@/app/model/app-slice.ts"
+import { RootState } from "@/app/model/store.ts"
 import { ResultCode } from "@/common/enums"
 import { handleServerError } from "@/common/utils/handleServerError.ts"
 import { handleAppError } from "@/common/utils/handleAppError.ts"
@@ -22,7 +22,7 @@ export const tasksSlice = createAppSlice({
         const { dispatch, rejectWithValue } = thunkAPI
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.getTasks(todolistId)
+          const res = await _tasksApi.getTasks(todolistId)
           domainTaskSchema.array().parse(res.data.items) // zod validation
           dispatch(changeStatusAC({ status: "succeeded" }))
           return { tasks: res.data.items, todolistId }
@@ -41,7 +41,7 @@ export const tasksSlice = createAppSlice({
       async (args: { todolistId: string; title: string }, { dispatch, rejectWithValue }) => {
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.createTask(args)
+          const res = await _tasksApi.createTask(args)
           domainTaskSchema.parse(res.data.data.item) // zod validation
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))
@@ -64,7 +64,7 @@ export const tasksSlice = createAppSlice({
     deleteTask: create.asyncThunk(
       async (args: { todolistId: string; taskId: string }, { dispatch, rejectWithValue }) => {
         try {
-          const res = await tasksApi.deleteTask(args)
+          const res = await _tasksApi.deleteTask(args)
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))
             return args
@@ -113,7 +113,7 @@ export const tasksSlice = createAppSlice({
 
         try {
           dispatch(changeStatusAC({ status: "loading" }))
-          const res = await tasksApi.updateTask({ todolistId, taskId, model })
+          const res = await _tasksApi.updateTask({ todolistId, taskId, model })
           domainTaskSchema.parse(res.data.data.item) // zod validation
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(changeStatusAC({ status: "succeeded" }))

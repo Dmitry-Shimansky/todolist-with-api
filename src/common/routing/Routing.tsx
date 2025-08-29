@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router"
-import { Main } from "@/app/Main.tsx"
+import { Main } from "@/app/ui/Main.tsx"
 import { Login } from "@/features/auth/ui/Login/Login.tsx"
 import { PageNotFound } from "@/common/components"
 import { PrivateRoutes } from "@/common/components/PrivateRoutes/PrivateRoutes.tsx"
 import { useAppSelector } from "@/common/hooks"
-import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
+import { selectIsLoggedIn } from "@/app/model/app-slice.ts"
 
 export const Path = {
   Main: "/",
