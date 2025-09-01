@@ -1,8 +1,9 @@
 import { TaskItem } from "./TaskItem/TaskItem.tsx"
 import List from "@mui/material/List"
-import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
+import { TasksSkeleton } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TasksSkeleton/TasksSkeleton.tsx"
+import { DomainTodolist } from "@/features/todolists/lib/types"
 
 type Props = {
   todolist: DomainTodolist
@@ -11,7 +12,18 @@ type Props = {
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter, entityStatus } = todolist
 
-  const { data } = useGetTasksQuery(id)
+  const { data, isLoading } = useGetTasksQuery(id)
+
+  // useEffect(() => {
+  //   if (error) {
+  //     if ("status" in error) {
+  //       const errMsg = "error" in error ? error.error : JSON.stringify(error.data)
+  //       dispatch(setAppErrorAC({ error: errMsg }))
+  //     } else {
+  //       dispatch(setAppErrorAC({ error: error.message || "Some error Occurred" }))
+  //     }
+  //   }
+  // }, [error])
 
   let filteredTasks = data?.items
   if (filter === "active") {
@@ -19,6 +31,10 @@ export const Tasks = ({ todolist }: Props) => {
   }
   if (filter === "completed") {
     filteredTasks = filteredTasks?.filter((task) => task.status === TaskStatus.Completed)
+  }
+
+  if (isLoading) {
+    return <TasksSkeleton />
   }
 
   return (
